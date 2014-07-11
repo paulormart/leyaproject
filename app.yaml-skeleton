@@ -16,3 +16,7 @@ libraries:
 env_variables:
   DJANGO_SETTINGS_MODULE: 'leyaproject.settings.settings'
   SECRET_KEY: 'django.secret.key.here'
+  GOOGLE_CLOUD_SQL_PROJECT_ID: 'your-project-id'
+  GOOGLE_CLOUD_SQL_INSTANCE_NAME: 'your-instance-name'
+  GOOGLE_CLOUD_SQL_DB_NAME: 'your-database-name'
+  GOOGLE_CLOUD_SQL_DB_USER: 'your-database-user'

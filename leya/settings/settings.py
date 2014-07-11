@@ -11,17 +11,41 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+import os
+if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
+    # Running on production App Engine, so use a Google Cloud SQL database.
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '/cloudsql/%s:%s' % (os.getenv('GOOGLE_CLOUD_SQL_PROJECT_ID'),
+                                         os.getenv('GOOGLE_CLOUD_SQL_INSTANCE_NAME')),
+            'NAME': '%s' % (os.getenv('GOOGLE_CLOUD_SQL_DB_NAME')),
+            'USER': '%s' % (os.getenv('GOOGLE_CLOUD_SQL_DB_USER')),
+        }
     }
-}
+elif os.getenv('SETTINGS_MODE') == 'prod':
+    # Running in development, but want to access the Google Cloud SQL instance
+    # in production.
+    DATABASES = {
+        'default': {
+            'ENGINE': 'google.appengine.ext.django.backends.rdbms',
+            'INSTANCE': '%s:%s' % (os.getenv('GOOGLE_CLOUD_SQL_PROJECT_ID'),
+                                   os.getenv('GOOGLE_CLOUD_SQL_INSTANCE_NAME')),
+            'NAME': '%s' % (os.getenv('GOOGLE_CLOUD_SQL_DB_NAME')),
+            'USER': '%s' % (os.getenv('GOOGLE_CLOUD_SQL_DB_USER')),
+        }
+    }
+else:
+    # Running in development, so use a local MySQL database.
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': '%s' % (os.getenv('LOCAL_DB_NAME')),
+            'USER': '%s' % (os.getenv('LOCAL_DB_USER')),
+            'PASSWORD': '%s' % (os.getenv('LOCAL_DB_PASSWORD')),
+        }
+    }
+
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
