@@ -1,6 +1,15 @@
 import os,sys
 os.environ['DJANGO_SETTINGS_MODULE'] = 'leya.settings.settings'
 
+# ===========
+# Add any python 3rd party module that doesnt exist at
+# https://developers.google.com/appengine/docs/python/tools/libraries27
+# ===========
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), 'leya/libs'))
+# ===========
+
 # Force Django to reload its settings.
 from django.conf import settings
 settings._target = None

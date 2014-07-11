@@ -74,30 +74,43 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
-# Absolute filesystem path to the directory that will hold user-uploaded files.
+
+# ============
+# PATHS Configuration
+# ============
+
+#from ..libs import unipath
+
+import unipath
+
+# PROJECT_DIR = ../themoon_project
+PROJECT_DIR = unipath.Path(__file__).ancestor(3)
+
+# ============
+# MEDIA
+# ============
+
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = ''
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash.
+MEDIA_ROOT = PROJECT_DIR.child('media')
 # Examples: "http://example.com/media/", "http://media.example.com/"
-MEDIA_URL = ''
+MEDIA_URL = 'http://media.example.com/'
+# ============
 
-# Absolute path to the directory static files should be collected to.
-# Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
-
-# URL prefix for static files.
+STATIC_ROOT = PROJECT_DIR.child('assets')
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
 
-# Additional locations of static files
 STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+    PROJECT_DIR.child('assets'),
+)
+
+TEMPLATE_DIRS = (
+    PROJECT_DIR.child('templates'),
+)
+
+LOCALE_PATHS = (
+    PROJECT_DIR.child('locale'),
 )
 
 # List of finder classes that know how to find static files in
@@ -135,6 +148,7 @@ WSGI_APPLICATION = 'leya.wsgi.application'
 
 import os
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '../../', 'templates').replace('\\','/'),)
+
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -180,3 +194,12 @@ LOGGING = {
         },
     }
 }
+
+# ================
+# Google Cloud Storage
+# ================
+
+GOOGLE_CLOUD_STORAGE_BUCKET_NAME = '%s' % os.getenv('GOOGLE_CLOUD_STORAGE_BUCKET_NAME')
+
+DEFAULT_FILE_STORAGE = 'leya.core.storage.GoogleCloudStorage'
+STATICFILE_STORAGE = 'leya.core.storage.GoogleCloudStorage'
