@@ -4,7 +4,8 @@ from .views import *
 
 urlpatterns = patterns('',
 
-        url(r'^create/$', CreateView.as_view(), name='hello_create'),
-        url(r'^list/$', ListView.as_view(), name='hello__list'),
+        url(r'^create/$', HelloCreateView.as_view(), name='create'),
+        url(r'^list/$', HelloListView.as_view(), name='list'),
+        url(r'^delete/(?P<pk>[0-9]+)/$', HelloRemoveView.as_view(), name='remove'),
 
 )

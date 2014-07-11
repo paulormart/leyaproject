@@ -93,7 +93,7 @@ PROJECT_DIR = unipath.Path(__file__).ancestor(3)
 # Example: "/var/www/example.com/media/"
 MEDIA_ROOT = PROJECT_DIR.child('media')
 # Examples: "http://example.com/media/", "http://media.example.com/"
-MEDIA_URL = 'http://media.example.com/'
+MEDIA_URL = '/media/'
 # ============
 
 # Example: "/var/www/example.com/static/"

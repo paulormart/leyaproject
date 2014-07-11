@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load url from future %}
 
 <!DOCTYPE html>
 <html>
@@ -16,6 +17,8 @@
 </head>
 <body>
     <h1>Hello</h1>
+    <p><a href="{% url 'hello:create' %}">Upload a File</a></p>
+    <p><a href="{% url 'hello:list' %}">List</a></p>
 
     {% block content %}
     {% endblock %}

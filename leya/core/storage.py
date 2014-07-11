@@ -1,5 +1,5 @@
 from django.core.files.storage import Storage
-from django.core.exceptions import ImproperlyConfigured, SuspiciousOperation
+from django.core.exceptions import ImproperlyConfigured, SuspiciousOperation, ObjectDoesNotExist
 from django.utils import timezone
 
 import os
@@ -72,11 +72,16 @@ class GoogleCloudStorage(Storage):
         return filestat.st_size
 
     def url(self, name):
-        """
-        Ask blobstore api for an url to directly serve the file
-        """
-        key = blobstore.create_gs_key('/gs' + name)
-        return images.get_serving_url(key)
+        try:
+            key = blobstore.create_gs_key('/gs' + name)
+        except blobstore.BlobNotFoundError:
+            return None
+
+        try:
+            return images.get_serving_url(key)
+        except images.ObjectNotFoundError:
+            return None
+
 
     def created_time(self, name):
         filestat = cloudstorage.stat(self.path(name))

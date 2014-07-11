@@ -1,12 +1,15 @@
 {% extends "base.html" %}
+{% load url from future %}
 
 {% block content %}
 
     <ul>
         {% for object in object_list %}
             <li>
-                <form action="{% url 'delete' object.id %}" method="post">{% csrf_token %}
-                    <a href="{{ object.file.url }}">{{ object.file.name }}</a>
+            {{ STATIC_URL }}
+                <p>{{ object.file.path }}</p>
+                <form action="{% url 'hello:remove' object.id %}" method="post">{% csrf_token %}
+                    <img src="{{ object.file.url }}" alt="{{ object.file.name }}">
                     <input type="submit" value="Delete" />
                 </form>
             </li>
