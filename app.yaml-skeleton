@@ -11,6 +11,10 @@ handlers:
 libraries:
 - name: django
   version: "latest"
+- name: MySQLdb
+  version: "latest"
+- name: PIL
+  version: "1.1.7"
 
 
 env_variables:
@@ -20,3 +24,6 @@ env_variables:
   GOOGLE_CLOUD_SQL_INSTANCE_NAME: 'your-instance-name'
   GOOGLE_CLOUD_SQL_DB_NAME: 'your-database-name'
   GOOGLE_CLOUD_SQL_DB_USER: 'your-database-user'
+  LOCAL_DB_NAME: 'your-local-database-name'
+  LOCAL_DB_USER: 'your-local-database-user'
+  LOCAL_DB_PASSWORD: 'your-local-database-password'
