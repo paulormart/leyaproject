@@ -27,3 +27,5 @@ env_variables:
   LOCAL_DB_NAME: 'your-local-database-name'
   LOCAL_DB_USER: 'your-local-database-user'
   LOCAL_DB_PASSWORD: 'your-local-database-password'
+  GOOGLE_CLOUD_STORAGE_BUCKET_NAME_MEDIA: 'bucket-media'
+  GOOGLE_CLOUD_STORAGE_BUCKET_NAME_STATIC: 'bucket-static'

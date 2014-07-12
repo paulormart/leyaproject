@@ -11,7 +11,6 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-import os
 if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
     # Running on production App Engine, so use a Google Cloud SQL database.
     DATABASES = {
@@ -99,10 +98,13 @@ MEDIA_URL = '/media/'
 # Example: "/var/www/example.com/static/"
 STATIC_ROOT = PROJECT_DIR.child('assets')
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/static/'
+STATIC_URL = 'http://storage.googleapis.com/%s/%s/' % (os.getenv('GOOGLE_CLOUD_STORAGE_BUCKET_NAME_STATIC'), 'assets')
+
+#STATIC_URL = '/static/'
+
 
 STATICFILES_DIRS = (
-    PROJECT_DIR.child('assets'),
+    #PROJECT_DIR.child('assets'),
 )
 
 TEMPLATE_DIRS = (
@@ -118,11 +120,12 @@ LOCALE_PATHS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = os.getenv('SECRET_KEY')
+
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -130,6 +133,12 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
 #     'django.template.loaders.eggs.Loader',
 )
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.static',
+)
+
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -199,7 +208,5 @@ LOGGING = {
 # Google Cloud Storage
 # ================
 
-GOOGLE_CLOUD_STORAGE_BUCKET_NAME = '%s' % os.getenv('GOOGLE_CLOUD_STORAGE_BUCKET_NAME')
-
+GOOGLE_CLOUD_STORAGE_BUCKET_NAME_MEDIA = '%s' % os.getenv('GOOGLE_CLOUD_STORAGE_BUCKET_NAME_MEDIA')
 DEFAULT_FILE_STORAGE = 'leya.core.storage.GoogleCloudStorage'
-STATICFILE_STORAGE = 'leya.core.storage.GoogleCloudStorage'

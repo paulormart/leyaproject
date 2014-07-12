@@ -7,11 +7,13 @@
         {% for object in object_list %}
             <li>
             {{ STATIC_URL }}
+                {% if object.file %}
                 <p>{{ object.file.path }}</p>
                 <form action="{% url 'hello:remove' object.id %}" method="post">{% csrf_token %}
                     <img src="{{ object.file.url }}" alt="{{ object.file.name }}">
                     <input type="submit" value="Delete" />
                 </form>
+                {% endif %}
             </li>
         {% empty %}
             <li>No documents.</li>

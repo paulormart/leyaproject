@@ -24,10 +24,10 @@ class GoogleCloudStorage(Storage):
         Check for bucket name settings upon initialization
         """
         try:
-            cloudstorage.validate_bucket_name(settings.GOOGLE_CLOUD_STORAGE_BUCKET_NAME)
+            cloudstorage.validate_bucket_name(settings.GOOGLE_CLOUD_STORAGE_BUCKET_NAME_MEDIA)
         except ValueError:
-            raise ImproperlyConfigured("Please specify a valid value for 'GOOGLE_CLOUD_STORAGE_BUCKET_NAME' setting")
-        self._bucket = '/' + settings.GOOGLE_CLOUD_STORAGE_BUCKET_NAME
+            raise ImproperlyConfigured("Please specify a valid value for 'GOOGLE_CLOUD_STORAGE_BUCKET_NAME_MEDIA' setting")
+        self._bucket = '/' + settings.GOOGLE_CLOUD_STORAGE_BUCKET_NAME_MEDIA
 
     def path(self, name):
         """
@@ -76,7 +76,6 @@ class GoogleCloudStorage(Storage):
             key = blobstore.create_gs_key('/gs' + name)
         except blobstore.BlobNotFoundError:
             return None
-
         try:
             return images.get_serving_url(key)
         except images.ObjectNotFoundError:
